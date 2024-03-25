@@ -1,22 +1,45 @@
+<?php include 'connection.php' ?>
+<?php
+
+if(isset($_POST['submit'])){
+	$users = $_POST['user'];
+	$passs = $_POST['pass'];
+
+	$sql = "SELECT * FROM 	`users` WHERE `Username` = ? AND `Password` = ?";
+	$stmt = $conn->prepare($sql);
+	$stmt -> bind_param("ss",$users,$passs);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_assoc();
+
+	if ($passs != @$row['Password'] && $users != @$row['Username']) {
+		echo "Incorrect Credentials, Try Again!";
+	}else{
+		header("Location:dashboard.php");
+	}
+	
+	
+
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Login</title>
-	<style>
-		.container{
-			margin: 0;
+	<title>LOGIN FORM</title>
+<h2>PHP LOGIN FORM</h2>
+<style>
+	body{
+		background-color: grey;
+		margin: 0;
 			align-items: center;
 			 justify-content: center;
 			display-flex: flex;
 			padding-top: 250px;
 			padding-left: 550px;
 			left: 200px;
-
-		}
-
-		.login {
-			background-image: url('793ca866cdd034589a6ef8a0a526283e.jpg');
-			 background-size: 600px;
+	}
+	.login-form{
+		 background-size: 600px;
 			 background-repeat: no-repeat;
 			 background-position: center;
 			color: red;
@@ -25,47 +48,55 @@
 			border-radius: 30px;
 			width: 600px;
 			height: 250px;
-	
-
-			
-		}
-
-		input[type=submit]{
-			color: lime;
-			background-color: grey;
-			border-radius: 10px;
-		}
-		input[type=submit]:hover{
-			color: red;
-			cursor: pointer;
-		}
-		input[type=text],input[type=password]{
-			color: green;
-			width: 30%;
-			height: 30%;
-			border: solid green 2px;
-			border-radius: 10px;
-
-		}
-		input[type=password]:hover{
-		background-color: grey;
-		}
-		input[type=text]:hover{
-			background-color: grey;
-		}
-	</style>
-</head>
+	}
+	.form-group{
+		padding: -10px;
+	}
+	h2{
+		color: skyblue;
+	}
+	p{
+		color: skyblue;
+	}
+	button[type=submit]{
+		border: 2px solid skyblue;
+		border-radius: 10px;
+		background-color: white;
+	}
+	a {
+		color: skyblue;
+		border: solid 2px skyblue;
+		background-color: white;
+		border-radius: 10px;
+	}
+</style>
 <body>
 	<div class="container">
-		<div class="login">
-	<h2>Sign In</h2>
-	<form action="login.php" method="post">
-		<label for="username">Username:</label><br>
-		<input type="text" id="username" name="username"><br>
-		<label for="password">Password:</label><br>
-		<input type="password" id="password" name="password"><br><br>
-		<input type="submit" value="Login">
+<div class="login-form">
+	
+	<form method="post" class="form-group">
+		<div class="form-group">
+			<input type="text" name="user" placeholder="USERNAME!"><br><br>
+        </div>
+
+        	<div class="form-group">
+			<input type="password" name="pass" placeholder="PASSWORD!"><br><br>
+        </div>
+
+        	<div class="form-group">
+			<button type="submit" name="submit">LogIn</button>
+		</div>
 	</form>
+	<br><br>
+	<div class="text-center">
+		<span class="small"> </span><p>Not have an Account? <a class="font-weight-bold small" href="register.php">REGISTER</a></p><br><br>
+	</div>
+	<div class="text-center">
+
+		<span class="small">Powered by: Cherry Mobile!</span>
+	</div>
+	<div class="text-center">
+	</div>
 </div>
 </div>
 
